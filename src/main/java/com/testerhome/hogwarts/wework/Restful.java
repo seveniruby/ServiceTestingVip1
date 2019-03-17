@@ -31,4 +31,42 @@ public class Restful {
         return documentContext.jsonString();
     }
 
+    public Response templateFromHar(String path, String pattern, HashMap<String, Object> map){
+        //todo: 支持从har文件读取接口定义并发送
+        //从har中读取请求，进行更新
+        DocumentContext documentContext= JsonPath.parse(Restful.class
+                .getResourceAsStream(path));
+        map.entrySet().forEach(entry->{
+            documentContext.set(entry.getKey(), entry.getValue());
+        });
+
+        String method=documentContext.read("method");
+        String url=documentContext.read("url");
+        return requestSpecification.when().request(method, url);
+    }
+
+    public Response templateFromSwagger(String path, String pattern, HashMap<String, Object> map){
+        //todo: 支持从swagger自动生成接口定义并发送
+        //从har中读取请求，进行更新
+        DocumentContext documentContext= JsonPath.parse(Restful.class
+                .getResourceAsStream(path));
+        map.entrySet().forEach(entry->{
+            documentContext.set(entry.getKey(), entry.getValue());
+        });
+
+        String method=documentContext.read("method");
+        String url=documentContext.read("url");
+        return requestSpecification.when().request(method, url);
+    }
+    public Response templateFromYaml(String path, HashMap<String, Object> map){
+        //todo: 根据yaml生成接口定义并发送
+        return null;
+    }
+    //todo: 支持wsdl soap
+
+    public Response api(String path, HashMap<String, Object> map){
+        //todo: 动态调用
+        return null;
+    }
+
 }

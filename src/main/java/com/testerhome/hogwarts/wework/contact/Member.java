@@ -13,4 +13,5 @@ public class Member extends Contact{
                 .then().log().all().extract().response();
 
     }
+
 }

@@ -67,4 +67,11 @@ class DepartmentTest {
         String id=String.valueOf(idInt);
         department.update("seveniruby_d2"+random,  id).then().body("errcode", equalTo(0));
     }
+
+    @Test
+    void updateAll(){
+        //todo:
+        HashMap<String, Object> map=new HashMap<>();
+        department.api("api.json", map).then().statusCode(200);
+    }
 }
