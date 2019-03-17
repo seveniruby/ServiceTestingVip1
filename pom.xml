@@ -19,6 +19,12 @@
             <artifactId>rest-assured</artifactId>
             <version>3.2.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
 
 
