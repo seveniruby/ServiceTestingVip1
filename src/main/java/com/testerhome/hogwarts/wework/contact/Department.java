@@ -7,6 +7,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Department extends Contact{
     public Response list(String id){
@@ -26,7 +27,7 @@ public class Department extends Contact{
         return requestSpecification
                 .body(body)
                 .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
-                .then().extract().response();
+                .then().log().all().extract().response();
 
     }
     public Response create(HashMap<String, Object> map){
@@ -62,6 +63,15 @@ public class Department extends Contact{
                 .body(body)
                 .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/update")
                 .then().extract().response();
+
+    }
+
+    public Response deleteAll(){
+        reset();
+        List<Integer> idList=list("").then().log().all().extract().path("department.id");
+        System.out.println(idList);
+        idList.forEach(id->delete(id.toString()));
+        return null;
 
     }
 }

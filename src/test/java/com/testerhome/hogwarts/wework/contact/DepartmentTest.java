@@ -17,6 +17,7 @@ class DepartmentTest {
     void setUp() {
         if(department==null){
             department=new Department();
+            department.deleteAll();
         }
     }
 
@@ -28,8 +29,6 @@ class DepartmentTest {
 
     @Test
     void create() {
-        department.create("seveniruby_d1", "33").then().body("errcode", equalTo(60008));
-        department.create("seveniruby_d1", "33").then().body("errcode", equalTo(60008));
         department.create("思寒department"+random, "1").then().body("errcode", equalTo(0));
     }
 
@@ -68,5 +67,4 @@ class DepartmentTest {
         String id=String.valueOf(idInt);
         department.update("seveniruby_d2"+random,  id).then().body("errcode", equalTo(0));
     }
-
 }
