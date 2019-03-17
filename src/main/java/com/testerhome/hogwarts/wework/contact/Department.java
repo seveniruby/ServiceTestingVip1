@@ -1,9 +1,12 @@
 package com.testerhome.hogwarts.wework.contact;
 
+import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.testerhome.hogwarts.wework.Wework;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+
+import java.util.HashMap;
 
 public class Department extends Contact{
     public Response list(String id){
@@ -22,6 +25,20 @@ public class Department extends Contact{
                 .set("parentid", parentid).jsonString();
         return requestSpecification
                 .body(body)
+                .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
+                .then().extract().response();
+
+    }
+    public Response create(HashMap<String, Object> map){
+        reset();
+
+        DocumentContext documentContext=JsonPath.parse(this.getClass()
+                .getResourceAsStream("/data/create.json"));
+        map.entrySet().forEach(entry->{
+            documentContext.set(entry.getKey(), entry.getValue());
+        });
+        return requestSpecification
+                .body(documentContext.jsonString())
                 .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
                 .then().extract().response();
 
