@@ -17,5 +17,10 @@ public class Contact extends Restful {
                 .log().all()
                 .queryParam("access_token", Wework.getToken())
                 .contentType(ContentType.JSON);
+
+        requestSpecification.filter( (req, res, ctx)->{
+            //todo: 对请求 响应做封装
+            return ctx.next(req, res);
+        });
     }
 }

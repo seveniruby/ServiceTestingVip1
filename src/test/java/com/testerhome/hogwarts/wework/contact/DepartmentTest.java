@@ -3,6 +3,8 @@ package com.testerhome.hogwarts.wework.contact;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.util.HashMap;
 
@@ -45,6 +47,14 @@ class DepartmentTest {
     @Test
     void createWithChinese() {
         department.create("思寒department"+random, "1").then().body("errcode", equalTo(0));
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/data/createWithDup.csv")
+    void createWithDup(String name, Integer expectCode){
+        department.create(name+random, "1").then().body("errcode", equalTo(0));
+        department.create(name+random, "1").then().body("errcode", equalTo(expectCode));
+
     }
 
     @Test
