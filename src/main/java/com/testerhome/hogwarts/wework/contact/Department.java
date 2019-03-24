@@ -1,7 +1,5 @@
 package com.testerhome.hogwarts.wework.contact;
 
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
 import io.restassured.response.Response;
 
 import java.util.HashMap;
@@ -11,7 +9,7 @@ public class Department extends Contact{
     public Response list(String id){
         HashMap<String, Object> map=new HashMap<String, Object>();
         map.put("id", id);
-        return templateFromYaml("/api/list.yaml", map);
+        return getResponseFromYaml("/api/list.yaml", map);
     }
 
     public Response create(String name, String parentid){
@@ -21,17 +19,17 @@ public class Department extends Contact{
         map.put("name", name);
         map.put("parentid", parentid);
 
-        return templateFromYaml("/api/create.yaml", map);
+        return getResponseFromYaml("/api/create.yaml", map);
     }
     public Response create(HashMap<String, Object> map){
         map.put("_file", "/data/create.json");
-        return templateFromYaml("/api/create.yaml", map);
+        return getResponseFromYaml("/api/create.yaml", map);
     }
 
     public Response delete(String id){
         HashMap<String, Object> map=new HashMap<String, Object>();
         map.put("id", id);
-        return templateFromYaml("/api/delete.yaml", map);
+        return getResponseFromYaml("/api/delete.yaml", map);
     }
 
     public Response update(String name, String id){
@@ -42,12 +40,12 @@ public class Department extends Contact{
         map.put("name", name);
         map.put("id", id);
 
-        return templateFromYaml("/api/update.yaml", map);
+        return getResponseFromYaml("/api/update.yaml", map);
     }
 
     public Response update(HashMap<String, Object> map){
         //todo:
-        return templateFromHar(
+        return getResponseFromHar(
                 "demo.har.json",
                 "https://work.weixin.qq.com/wework_admin/party?action=addparty" ,
                 map
