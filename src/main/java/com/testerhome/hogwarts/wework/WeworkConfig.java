@@ -1,5 +1,13 @@
 package com.testerhome.hogwarts.wework;
 
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+
+import java.io.IOException;
+
 public class WeworkConfig {
 
     public String agentId="1000005";
@@ -10,12 +18,24 @@ public class WeworkConfig {
     private static WeworkConfig weworkConfig;
     public static WeworkConfig getInstance(){
         if(weworkConfig==null){
-            weworkConfig=new WeworkConfig();
+            weworkConfig=load("/conf/WeworkConfig.yaml");
+            System.out.println(weworkConfig);
+            System.out.println(weworkConfig.agentId);
         }
         return weworkConfig;
     }
 
-    public static void load(String path){
-        //todo: read from yaml or json
+    public static WeworkConfig load(String path){
+        //fixed: read from yaml or json
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+        try {
+            return mapper.readValue(WeworkConfig.class.getResourceAsStream(path), WeworkConfig.class);
+            //System.out.println(mapper.writeValueAsString(WeworkConfig.getInstance()));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 }
