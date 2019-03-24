@@ -1,12 +1,12 @@
 package com.testerhome.hogwarts.wework.contact;
 
-import com.testerhome.hogwarts.wework.Restful;
+import com.testerhome.hogwarts.wework.Api;
 import com.testerhome.hogwarts.wework.Wework;
 import io.restassured.http.ContentType;
 
 import static io.restassured.RestAssured.given;
 
-public class Contact extends Restful {
+public class Contact extends Api {
     String random=String.valueOf(System.currentTimeMillis());
     public Contact(){
         reset();

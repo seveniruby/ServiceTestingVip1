@@ -1,6 +1,5 @@
 package com.testerhome.hogwarts.wework.contact;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +8,6 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.jupiter.api.Assertions.*;
 
 class DepartmentTest {
 
@@ -19,14 +17,14 @@ class DepartmentTest {
     void setUp() {
         if(department==null){
             department=new Department();
-            department.deleteAll();
+            //department.deleteAll();
         }
     }
 
     @Test
     void list() {
         department.list("").then().statusCode(200);
-        department.list("33").then().statusCode(200);
+        department.list("1").then().statusCode(200);
     }
 
     @Test
@@ -82,6 +80,11 @@ class DepartmentTest {
     void updateAll(){
         //todo:
         HashMap<String, Object> map=new HashMap<>();
-        department.api("api.json", map).then().statusCode(200);
+        department.readApiFromYaml("readApiFromYaml.json", map).then().statusCode(200);
+    }
+
+    @Test
+    void deleteAll(){
+        department.deleteAll();
     }
 }

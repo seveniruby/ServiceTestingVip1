@@ -2,8 +2,6 @@ package com.testerhome.hogwarts.wework.contact;
 
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
-import com.testerhome.hogwarts.wework.Wework;
-import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
 import java.util.HashMap;
@@ -11,11 +9,10 @@ import java.util.List;
 
 public class Department extends Contact{
     public Response list(String id){
-        Response response= requestSpecification
-                .param("id", id)
-        .when().get("https://qyapi.weixin.qq.com/cgi-bin/department/list").then().extract().response();
         reset();
-        return response;
+        HashMap<String, Object> map=new HashMap<String, Object>();
+        map.put("id", id);
+        return templateFromYaml("/api/list.yaml", map);
     }
 
     public Response create(String name, String parentid){
@@ -50,7 +47,8 @@ public class Department extends Contact{
         return requestSpecification
                 .queryParam("id", id)
                 .when().get("https://qyapi.weixin.qq.com/cgi-bin/department/delete")
-                .then().extract().response();
+                .then().log().all()
+                .extract().response();
     }
 
     public Response update(String name, String id){
@@ -83,6 +81,6 @@ public class Department extends Contact{
     }
 
     public Response updateAll(HashMap<String, Object> map){
-        return api("api.json", map);
+        return readApiFromYaml("readApiFromYaml.json", map);
     }
 }
