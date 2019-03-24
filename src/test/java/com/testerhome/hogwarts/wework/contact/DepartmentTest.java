@@ -8,6 +8,8 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThan;
 
 class DepartmentTest {
 
@@ -85,6 +87,10 @@ class DepartmentTest {
 
     @Test
     void deleteAll(){
+
         department.deleteAll();
+        assertThat(1.0, lessThan(2.0));
     }
+
+
 }

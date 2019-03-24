@@ -3,6 +3,7 @@ package com.testerhome.hogwarts.wework;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.github.mustachejava.DefaultMustacheFactory;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
 import com.sun.org.apache.xpath.internal.operations.Bool;
@@ -44,6 +45,17 @@ public class Api {
         });
         return documentContext.jsonString();
     }
+
+
+    public static String templateFromMustache(String path, HashMap<String, Object> map) {
+        //new DefaultMustacheFactory().compile("/data/create.mustache").execute()
+
+        return null;
+        //return documentContext.jsonString();
+    }
+
+
+
 
     public Response getResponseFromHar(String path, String pattern, HashMap<String, Object> map) {
         Restful restful=getApiFromHar(path, pattern);
@@ -166,7 +178,9 @@ public class Api {
             requestSpecification.body(restful.body);
         }
 
-        //todo: 多环境支持，替换url，更新host的header
+
+
+        String[] url=updateUrl(restful.url);
 
         return requestSpecification.log().all()
                 .when().request(restful.method, restful.url)
@@ -207,7 +221,7 @@ public class Api {
 
 
     private String[] updateUrl(String url) {
-        //todo: 多环境支持，替换url，更新host的header
+        //fixed: 多环境支持，替换url，更新host的header
 
         HashMap<String, String> hosts=WeworkConfig.getInstance().env.get(WeworkConfig.getInstance().current);
 
