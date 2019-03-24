@@ -9,62 +9,44 @@ import java.util.List;
 
 public class Department extends Contact{
     public Response list(String id){
-        reset();
         HashMap<String, Object> map=new HashMap<String, Object>();
         map.put("id", id);
         return templateFromYaml("/api/list.yaml", map);
     }
 
     public Response create(String name, String parentid){
-        reset();
-        String body=JsonPath.parse(this.getClass()
-                .getResourceAsStream("/data/create.json"))
-                .set("$.name", name)
-                .set("parentid", parentid).jsonString();
-        return requestSpecification
-                .body(body)
-                .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
-                .then().log().all().extract().response();
+        //让用例更清晰
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("_file", "/data/create.json");
+        map.put("name", name);
+        map.put("parentid", parentid);
 
+        return templateFromYaml("/api/create.yaml", map);
     }
     public Response create(HashMap<String, Object> map){
-        reset();
-
-        DocumentContext documentContext=JsonPath.parse(this.getClass()
-                .getResourceAsStream("/data/create.json"));
-        map.entrySet().forEach(entry->{
-            documentContext.set(entry.getKey(), entry.getValue());
-        });
-        return requestSpecification
-                .body(documentContext.jsonString())
-                .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/create")
-                .then().extract().response();
-
+        map.put("_file", "/data/create.json");
+        return templateFromYaml("/api/create.yaml", map);
     }
 
     public Response delete(String id){
-        reset();
-        return requestSpecification
-                .queryParam("id", id)
-                .when().get("https://qyapi.weixin.qq.com/cgi-bin/department/delete")
-                .then().log().all()
-                .extract().response();
+        HashMap<String, Object> map=new HashMap<String, Object>();
+        map.put("id", id);
+        return templateFromYaml("/api/delete.yaml", map);
     }
 
     public Response update(String name, String id){
-        reset();
-        String body=JsonPath.parse(this.getClass()
-                .getResourceAsStream("/data/update.json"))
-                .set("$.name", name)
-                .set("id", id).jsonString();
-        return requestSpecification
-                .body(body)
-                .when().post("https://qyapi.weixin.qq.com/cgi-bin/department/update")
-                .then().extract().response();
 
+
+        HashMap<String, Object> map=new HashMap<>();
+        map.put("_file", "/data/update.json");
+        map.put("name", name);
+        map.put("id", id);
+
+        return templateFromYaml("/api/update.yaml", map);
     }
 
     public Response update(HashMap<String, Object> map){
+        //todo:
         return templateFromHar(
                 "demo.har.json",
                 "https://work.weixin.qq.com/wework_admin/party?action=addparty" ,
@@ -73,7 +55,6 @@ public class Department extends Contact{
     }
 
     public Response deleteAll(){
-        reset();
         List<Integer> idList=list("").then().log().all().extract().path("department.id");
         System.out.println(idList);
         idList.forEach(id->delete(id.toString()));
@@ -81,6 +62,7 @@ public class Department extends Contact{
     }
 
     public Response updateAll(HashMap<String, Object> map){
+        //todo:
         return readApiFromYaml("readApiFromYaml.json", map);
     }
 }

@@ -24,7 +24,7 @@ class DepartmentTest {
     @Test
     void list() {
         department.list("").then().statusCode(200);
-        department.list("1").then().statusCode(200);
+        department.list("2").then().statusCode(200);
     }
 
     @Test
