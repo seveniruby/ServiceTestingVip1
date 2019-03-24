@@ -7,6 +7,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public class WeworkConfig {
 
@@ -14,6 +15,9 @@ public class WeworkConfig {
     public String secret="1JPyY9GvPLZfpvxEDjok-Xt_9v7HIBYJhZUoO6EgNGY";
     public String corpid = "wwd6da61649bd66fea";
     public String contactSecret="C7uGOrNyxWWzwBsUyWEbLQdOqoWPz4hNvxj9RIFv-4U";
+
+    public String current="test";
+    public HashMap<String, HashMap<String, String>> env;
 
     private static WeworkConfig weworkConfig;
     public static WeworkConfig getInstance(){

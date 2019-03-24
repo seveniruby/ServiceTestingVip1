@@ -20,11 +20,17 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.Map;
 
 import static io.restassured.RestAssured.*;
 
 public class Api {
     HashMap<String, Object> query = new HashMap<String, Object>();
+
+
+    public Api(){
+        useRelaxedHTTPSValidation();
+    }
 
     public RequestSpecification getDefaultRequestSpecification() {
         return given().log().all();
@@ -189,12 +195,34 @@ public class Api {
             requestSpecification.body(restful.body);
         }
 
-        //todo: 多环境支持，替换url，更新host的header
+        String[] url=updateUrl(restful.url);
 
         return requestSpecification.log().all()
-                .when().request(restful.method, restful.url)
+                .header("Host", url[0])
+                .when().request(restful.method, url[1])
                 .then().log().all()
                 .extract().response();
+
+    }
+
+
+    private String[] updateUrl(String url) {
+        //todo: 多环境支持，替换url，更新host的header
+
+        HashMap<String, String> hosts=WeworkConfig.getInstance().env.get(WeworkConfig.getInstance().current);
+
+        String host="";
+        String urlNew="";
+        for(Map.Entry<String, String> entry : hosts.entrySet()){
+            if(url.contains(entry.getKey())){
+                host=entry.getKey();
+                urlNew=url.replace(entry.getKey(), entry.getValue());
+            }
+        }
+
+        return new String[]{host, urlNew};
+
+
 
     }
     //todo: 支持wsdl soap
